@@ -54,7 +54,6 @@ power_monitor/
     *   Arduino IDE or PlatformIO for ESP8266 programming
     *   Docker Desktop (or Docker Engine + Docker Compose on Linux)
     *   A text editor (e.g., VS Code)
-    *   Git (optional, for version control)
     *   (If running Ingester App outside Docker for dev) Python 3.7+ and `pip`
 
 ## Setup and Installation
@@ -153,7 +152,6 @@ const int serverPort = 5000;
     *   Click "Save & test". You should see a success message.
 4.  **Import or Create Dashboards:**
     *   You can create new dashboards and panels manually.
-    *   *(Optional: If you export a dashboard as JSON, you can provide instructions here on how to import it.)*
     *   **Example Query for a Time Series Panel (e.g., Active Power):**
         ```sql
         SELECT
