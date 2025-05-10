@@ -1,0 +1,60 @@
+
+services:
+  postgres_db:
+    image: postgres:15
+    container_name: pzem_postgres_db
+    environment:
+      POSTGRES_USER: pzemuser
+      POSTGRES_PASSWORD: pzemsecret
+      POSTGRES_DB: pzemdata
+    ports:
+      - "5432:5432" 
+    volumes:
+      - postgres_data_pzem:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - esp_data_net
+
+  ingester_app:
+    build:
+      context: ./ingester_app
+      dockerfile: Dockerfile
+    container_name: pzem_ingester_app
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_APP: app.py
+      FLASK_DEBUG: "0"
+      DB_HOST: postgres_db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-pzemdata}
+      DB_USER: ${POSTGRES_USER:-pzemuser}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-pzemsecret}
+    depends_on:
+      - postgres_db
+    restart: unless-stopped
+    networks:
+      - esp_data_net
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: pzem_grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data_pzem:/var/lib/grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GF_ADMIN_PASSWORD:-changeme}
+    restart: unless-stopped
+    depends_on:
+      - postgres_db
+    networks:
+      - esp_data_net
+
+volumes:
+  postgres_data_pzem:
+  grafana_data_pzem:
+
+networks:
+  esp_data_net:
+    driver: bridge
