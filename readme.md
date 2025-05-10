@@ -54,7 +54,6 @@ power_monitor/
     *   Arduino IDE or PlatformIO for ESP8266 programming
     *   Docker Desktop (or Docker Engine + Docker Compose on Linux)
     *   A text editor (e.g., VS Code)
-    *   (If running Ingester App outside Docker for dev) Python 3.7+ and `pip`
 
 ## Setup and Installation
 
